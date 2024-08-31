@@ -12,7 +12,7 @@ const Manager = () => {
 
   const getPasswords = async () => {
     try {
-      const response = await fetch("http://localhost:3000/");
+      const response = await fetch("http://localhost:3000/passwords/getpass");
       const passwords = await response.json();
       if (Array.isArray(passwords)) {
         setPasswordArray(passwords);
@@ -40,7 +40,7 @@ const Manager = () => {
     ) {
       try {
         if (form.id) {
-          await fetch("http://localhost:3000/", {
+          await fetch("http://localhost:3000/passwords/delete", {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: form.id }),
@@ -48,7 +48,7 @@ const Manager = () => {
         }
 
         const newId = form.id || uuidv4();
-        await fetch("http://localhost:3000/", {
+        await fetch("http://localhost:3000/passwords/setpass", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...form, id: newId }),
@@ -86,7 +86,7 @@ const Manager = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch("http://localhost:3000/", {
+      await fetch("http://localhost:3000/passwords/delete", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),

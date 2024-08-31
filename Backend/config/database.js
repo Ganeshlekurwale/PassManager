@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const { MongoClient } = require('mongodb');
 
-const url = `mongodb+srv://ganeshlekurwale:passmanager@123@cluster0.mt58v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const url = process.env.MONGO_URI;
 
 if (!url) {
   throw new Error('MONGO_URI environment variable is not set');

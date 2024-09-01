@@ -41,7 +41,11 @@ const Manager = () => {
       form.password.length > 3
     ) {
       try {
-        if (form.id) {
+        let newId = form.id;
+
+        if (!newId) {
+          newId = uuidv4();
+        } else {
           await fetch(
             "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/delete",
             {
@@ -52,7 +56,6 @@ const Manager = () => {
           );
         }
 
-        const newId = form.id || uuidv4();
         await fetch(
           "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/setpass",
           {
@@ -62,10 +65,11 @@ const Manager = () => {
           }
         );
 
-        setPasswordArray([
-          ...passwordArray.filter((item) => item.id !== form.id),
+        setPasswordArray((prevArray) => [
+          ...prevArray.filter((item) => item.id !== form.id),
           { ...form, id: newId },
         ]);
+
         setForm({ site: "", username: "", password: "" });
         toast("Password Saved..!!", {
           position: "top-right",

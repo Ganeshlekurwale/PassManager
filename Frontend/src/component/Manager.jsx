@@ -12,7 +12,9 @@ const Manager = () => {
 
   const getPasswords = async () => {
     try {
-      const response = await fetch("https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/getpass");
+      const response = await fetch(
+        "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/getpass"
+      );
       const passwords = await response.json();
       if (Array.isArray(passwords)) {
         setPasswordArray(passwords);
@@ -40,19 +42,25 @@ const Manager = () => {
     ) {
       try {
         if (form.id) {
-          await fetch("https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/delete", {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id: form.id }),
-          });
+          await fetch(
+            "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/delete",
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id: form.id }),
+            }
+          );
         }
 
         const newId = form.id || uuidv4();
-        await fetch("https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/setpass", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...form, id: newId }),
-        });
+        await fetch(
+          "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/setpass",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...form, id: newId }),
+          }
+        );
 
         setPasswordArray([
           ...passwordArray.filter((item) => item.id !== form.id),
@@ -86,11 +94,14 @@ const Manager = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch("https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
+      await fetch(
+        "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/delete",
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        }
+      );
 
       setPasswordArray(passwordArray.filter((item) => item.id !== id));
       toast("Password Deleted..!", {

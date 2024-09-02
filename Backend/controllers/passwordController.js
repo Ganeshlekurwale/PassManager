@@ -38,14 +38,16 @@ async function createPassword(req, res) {
 async function deletePassword(req, res) {
   try {
     const { id } = req.body;
-
-    if (!id || !ObjectId.isValid(id)) {
+   
+    
+    if (!id) {
       return res.status(400).json({ error: 'Valid Password ID is required' });
     }
-
+    
     const passwordModel = new Password();
+  
     const result = await passwordModel.deleteById(id);
-
+      console.log(id);
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Password not found' });
     }

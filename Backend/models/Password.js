@@ -17,13 +17,13 @@ class Password {
 
  async deleteById(id) {
   try {
-    if (!ObjectId.isValid(id)) {
+    if (!id) {
       console.log('Invalid ID format:', id);
       throw new Error('Invalid ID');
     }
 
     console.log('Deleting document with ID:', id);
-    const result = await this.collection.deleteOne({ _id: new ObjectId(id) });
+    const result = await this.collection.deleteOne({ id });
     console.log('Delete result:', result);
     return result;
   } catch (error) {

@@ -12,11 +12,11 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors(
-  {
-    origin: ["https://pass-manager-frontend-blush.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  }
+  // {
+  //   origin: ["https://pass-manager-frontend-blush.vercel.app"],
+  //   methods: ["GET", "POST", "PUT", "DELETE"],
+  //   credentials: true
+  // }
 ));
 
 app.get("/",(req, res) => {

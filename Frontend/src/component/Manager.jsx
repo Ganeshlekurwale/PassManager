@@ -207,7 +207,7 @@ const Manager = () => {
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)]"></div>
       </div>
 
-      <div className="p-2 md: myContainer min-h-[88.2vh]:">
+      <div className="p-2 md:p-4 myContainer min-h-screen">
         <h1 className="text-4xl font-bold text-center">
           <span className="text-green-500"> &lt;</span>
           Pass

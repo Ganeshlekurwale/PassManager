@@ -63,7 +63,7 @@ async function updatePassword(req, res) {
   try {
     const { id, site, username, password } = req.body;
 
-    if (!id || !ObjectId.isValid(id) || !site || !username || !password) {
+    if (!id || !site || !username || !password) {
       return res.status(400).json({ error: 'Valid ID and all fields are required' });
     }
 

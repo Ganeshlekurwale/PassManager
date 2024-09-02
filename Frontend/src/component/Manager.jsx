@@ -153,6 +153,7 @@ const Manager = () => {
           body: JSON.stringify({ id }),
         }
       );
+      console.log(id);
 
       if (response.ok) {
         setPasswordArray(passwordArray.filter((item) => item.id !== id));

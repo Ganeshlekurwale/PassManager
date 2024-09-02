@@ -16,7 +16,7 @@ class Password {
   }
 
   async deleteById(id) {
-    return await this.collection.deleteOne({ _id: new ObjectId(id) });
+    return await this.collection.deleteOne({ _id: id });
   }
 
   async updateById(id, data) {

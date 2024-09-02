@@ -1,4 +1,5 @@
 const Password = require('../models/Password');
+const { ObjectId } = require('mongodb');
 
 async function getAllPasswords(req, res) {
   try {
@@ -38,8 +39,8 @@ async function deletePassword(req, res) {
   try {
     const { id } = req.body;
 
-    if (!id) {
-      return res.status(400).json({ error: 'Password ID is required' });
+    if (!id || !ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Valid Password ID is required' });
     }
 
     const passwordModel = new Password();
@@ -60,8 +61,8 @@ async function updatePassword(req, res) {
   try {
     const { id, site, username, password } = req.body;
 
-    if (!id || !site || !username || !password) {
-      return res.status(400).json({ error: 'All fields are required' });
+    if (!id || !ObjectId.isValid(id) || !site || !username || !password) {
+      return res.status(400).json({ error: 'Valid ID and all fields are required' });
     }
 
     const passwordModel = new Password();

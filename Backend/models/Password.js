@@ -18,6 +18,10 @@ class Password {
   async deleteById(id) {
     return await this.collection.deleteOne({ _id: new ObjectId(id) });
   }
+
+  async updateById(id, data) {
+    return await this.collection.updateOne({ _id: new ObjectId(id) }, { $set: data });
+  }
 }
 
 module.exports = Password;

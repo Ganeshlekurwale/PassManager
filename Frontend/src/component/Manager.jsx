@@ -56,7 +56,7 @@ const Manager = () => {
           );
         }
 
-        await fetch(
+        const response = await fetch(
           "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/setpass",
           {
             method: "POST",
@@ -65,22 +65,26 @@ const Manager = () => {
           }
         );
 
-        setPasswordArray((prevArray) => [
-          ...prevArray.filter((item) => item.id !== form.id),
-          { ...form, id: newId },
-        ]);
+        if (response.ok) {
+          setPasswordArray((prevArray) => [
+            ...prevArray.filter((item) => item.id !== form.id),
+            { ...form, id: newId },
+          ]);
 
-        setForm({ site: "", username: "", password: "" });
-        toast("Password Saved..!!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+          setForm({ site: "", username: "", password: "" });
+          toast("Password Saved..!!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          console.error("Failed to save the password:", response.statusText);
+        }
       } catch (error) {
         console.error("Error saving password:", error);
       }
@@ -91,14 +95,57 @@ const Manager = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = async (id) => {
     const itemToEdit = passwordArray.find((item) => item.id === id);
-    setForm(itemToEdit);
+    if (itemToEdit) {
+      setForm(itemToEdit);
+    }
+  };
+
+  const updatePassword = async () => {
+    if (
+      form.site.length > 3 &&
+      form.username.length > 3 &&
+      form.password.length > 3
+    ) {
+      try {
+        const response = await fetch(
+          "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/update",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form),
+          }
+        );
+
+        if (response.ok) {
+          setPasswordArray((prevArray) =>
+            prevArray.map((item) => (item.id === form.id ? form : item))
+          );
+
+          setForm({ site: "", username: "", password: "" });
+          toast("Password Updated..!!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          console.error("Failed to update the password:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error updating password:", error);
+      }
+    }
   };
 
   const handleDelete = async (id) => {
     try {
-      await fetch(
+      const response = await fetch(
         "https://pass-manager-backend-ganeshlekurwales-projects.vercel.app/passwords/delete",
         {
           method: "DELETE",
@@ -107,17 +154,21 @@ const Manager = () => {
         }
       );
 
-      setPasswordArray(passwordArray.filter((item) => item.id !== id));
-      toast("Password Deleted..!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      if (response.ok) {
+        setPasswordArray(passwordArray.filter((item) => item.id !== id));
+        toast("Password Deleted..!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        console.error("Failed to delete the password:", response.statusText);
+      }
     } catch (error) {
       console.error("Error deleting password:", error);
     }
@@ -170,11 +221,11 @@ const Manager = () => {
             value={form.site}
             onChange={handleChange}
             placeholder="Enter Website URL"
-            className="rounded-full border border-green-500 w-full p-4 py-1"
+            className="rounded-full border border-green-500 w-full p-4 py-1 md:w-1/2"
             type="text"
             name="site"
           />
-          <div className="flex flex-col md:flex-row w-full justify-between gap-8">
+          <div className="flex flex-col md:flex-row w-full md:w-1/2 justify-between gap-8">
             <input
               value={form.username}
               onChange={handleChange}
@@ -209,14 +260,14 @@ const Manager = () => {
             </div>
           </div>
           <button
-            onClick={savePassword}
+            onClick={form.id ? updatePassword : savePassword}
             className="flex justify-center items-center gap-2 bg-green-400 hover:bg-green-300 rounded-full px-8 py-2 w-fit border border-green-900"
           >
             <lord-icon
               src="https://cdn.lordicon.com/jgnvfzqg.json"
               trigger="hover"
             ></lord-icon>
-            Save Password
+            {form.id ? "Update Password" : "Save Password"}
           </button>
         </div>
 
@@ -224,7 +275,7 @@ const Manager = () => {
           <h2 className="text-2xl font-bold py-4">Your Passwords</h2>
           {passwordArray.length === 0 && <div>No Passwords to show</div>}
           {passwordArray.length !== 0 && (
-            <table className="table-auto w-full ">
+            <table className="table-auto w-full md:w-4/5 mx-auto">
               <thead className="bg-green-800 text-white">
                 <tr>
                   <th className="py-2">Site</th>

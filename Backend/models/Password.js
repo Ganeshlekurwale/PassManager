@@ -18,30 +18,22 @@ class Password {
  async deleteById(id) {
   try {
     if (!id) {
-      console.log('Invalid ID format:', id);
       throw new Error('Invalid ID');
     }
 
-    console.log('Deleting document with ID:', id);
     const result = await this.collection.deleteOne({ id });
-    console.log('Delete result:', result);
     return result;
   } catch (error) {
-    console.error('Error in deleteById:', error);
     throw error;
   }
 }
 
 async updateById(id, data) {
   try {
-    if (!ObjectId.isValid(id)) {
-      console.log('Invalid ID format:', id);
+    if (!id) {
       throw new Error('Invalid ID');
     }
-
-    console.log('Updating document with ID:', id, 'Update data:', data);
-    const result = await this.collection.updateOne({ _id: new ObjectId(id) }, { $set: data });
-    console.log('Update result:', result);
+    const result = await this.collection.updateOne({ id }, { $set: data });
     return result;
   } catch (error) {
     console.error('Error in updateById:', error);

@@ -13,7 +13,7 @@ const Footer = () => {
           Your trusted password management solution.
         </p>
         <p className="text-xs">
-          &copy; 2024-25 <span className="text-red-500 text-lg">❤️</span> Built
+          &copy; 2025-26 <span className="text-red-500 text-lg">❤️</span> Built
           with passion.
         </p>
       </div>
